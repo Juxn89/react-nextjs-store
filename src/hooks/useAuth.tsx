@@ -8,9 +8,18 @@ interface IProviderAuth {
 };
 
 interface IuseProviderAuth {
-    user: String,
+    user: IProfileResponse | undefined,
     singIn :  (email:string, password:string) => Promise<void>
 };
+
+interface IProfileResponse {
+    id: number,
+    avatar: string,
+    email: string,
+    name: string,
+    password: string,
+    role: string
+}
 
 const AuthContext = createContext<IuseProviderAuth | null>(null);
 
@@ -24,7 +33,8 @@ export const useAuth = () => {
 };
 
 function useProviderAuth(): IuseProviderAuth {
-    const [user, setUser] = useState<string>('');
+    const [user, setUser] = useState<IProfileResponse>();
+
     const singIn = async(email:string, password:string) => {
         const { auth:{login} } = endPoints;
         const options = {
@@ -36,7 +46,11 @@ function useProviderAuth(): IuseProviderAuth {
         const { data: { access_token } } = await axios.post(login, { email, password }, options);
 
         if(access_token) {
-            Cookie.set('token', access_token.access_token, { expires: 5 });
+            Cookie.set('token', access_token, { expires: 5 });
+
+            axios.defaults.headers.Authorization = `Bearer ${access_token}`;
+            const { data } = await axios.get<IProfileResponse>(endPoints.auth.profile);
+            setUser(data);
         }
     }
 
