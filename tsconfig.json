@@ -20,6 +20,7 @@
       "@common/*": ["common/*"],
       "@components/*": ["components/*"],
       "@layout/*": ["layout/*"],
+      "@hooks/*": ["hooks/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
