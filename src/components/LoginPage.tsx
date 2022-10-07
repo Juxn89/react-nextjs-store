@@ -2,15 +2,23 @@ import { FormEvent, useRef } from 'react';
 import { LockClosedIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useAuth } from '@hooks/useAuth';
 
 export default function LoginPage() {
   const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);  
+
+  const auth = useAuth();
 
   const submitHandler = (event:FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const email = emailRef?.current?.value;
-    const password = passwordRef?.current?.value;
+    const email = emailRef?.current?.value as string;
+    const password = passwordRef?.current?.value as string;
+
+    auth?.singIn(email, password)
+      .then(resp => {
+        console.log('Success:', resp);
+      });
   }
 
   return (

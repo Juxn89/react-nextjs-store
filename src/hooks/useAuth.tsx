@@ -1,6 +1,7 @@
 import React, { useState, useContext, createContext } from 'react';
 import Cookie from 'js-cookie';
 import axios from 'axios';
+import endPoints from 'services/api';
 
 interface IProviderAuth {
     children: JSX.Element
@@ -8,7 +9,7 @@ interface IProviderAuth {
 
 interface IuseProviderAuth {
     user: String,
-    singIn :  (email:String, password:String) => Promise<void>
+    singIn :  (email:string, password:string) => Promise<void>
 };
 
 const AuthContext = createContext<IuseProviderAuth | null>(null);
@@ -23,9 +24,17 @@ export const useAuth = () => {
 }
 
 function useProviderAuth(): IuseProviderAuth {
-    const [user, setUser] = useState<String>('');
-    const singIn = async(email:String, password:String) => {
-        setUser('login')
+    const [user, setUser] = useState<string>('');
+    const singIn = async(email:string, password:string) => {
+        const { auth:{login} } = endPoints;
+        const options = {
+            headers: {
+                accept: '*/*',
+                'Content-Type': 'application/json',
+            },
+        }
+        const { data: { access_token } } = await axios.post(login, { email, password }, options);
+        console.log(access_token);
     }
 
     return {
