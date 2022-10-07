@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ProviderAuth>
         <MainLayout>
           <Component {...pageProps} />
-        </MainLayout>        
+        </MainLayout>
       </ProviderAuth>
     </>
   );
