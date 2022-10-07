@@ -1,23 +1,35 @@
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { LockClosedIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@hooks/useAuth';
+import Loading from '@common/Loading';
+import { getErrorMessage } from 'helpers/Errors';
 
 export default function LoginPage() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState<string>();
+
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);  
 
   const auth = useAuth();
 
   const submitHandler = (event:FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
+
     event.preventDefault();
     const email = emailRef?.current?.value as string;
     const password = passwordRef?.current?.value as string;
 
     auth?.singIn(email, password)
       .then(resp => {
-        console.log('Success:', resp);
+        setIsLoading(false);
+      }).catch(err => {
+        setIsLoading(false);
+
+        const error = getErrorMessage(err.response.data.statusCode);
+        setErrors(error);
       });
   }
 
@@ -93,6 +105,15 @@ export default function LoginPage() {
             </form>
         </div>
       </div>
+
+      {
+        isLoading && <span>Loading...</span>
+      }
+
+      {
+        errors &&
+        <span>{ errors }</span>
+      }
     </>
   );
 }

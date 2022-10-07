@@ -17,11 +17,11 @@ const AuthContext = createContext<IuseProviderAuth | null>(null);
 export function ProviderAuth({children}: IProviderAuth) {
     const auth = useProviderAuth();
     return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
-}
+};
 
 export const useAuth = () => {
     return useContext(AuthContext);
-}
+};
 
 function useProviderAuth(): IuseProviderAuth {
     const [user, setUser] = useState<string>('');
@@ -34,11 +34,14 @@ function useProviderAuth(): IuseProviderAuth {
             },
         }
         const { data: { access_token } } = await axios.post(login, { email, password }, options);
-        console.log(access_token);
+
+        if(access_token) {
+            Cookie.set('token', access_token.access_token, { expires: 5 });
+        }
     }
 
     return {
         user,
         singIn
     }
-}
+};
