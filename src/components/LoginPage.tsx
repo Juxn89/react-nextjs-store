@@ -1,13 +1,16 @@
 import { FormEvent, useRef, useState } from 'react';
-import { LockClosedIcon } from '@heroicons/react/24/solid';
+import { useAuth } from '@hooks/useAuth';
+import { getErrorMessage } from '@helpers/Errors';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useAuth } from '@hooks/useAuth';
-import { getErrorMessage } from 'helpers/Errors';
+import { LockClosedIcon } from '@heroicons/react/24/solid';
+import { useRouter } from 'next/router';
+import ROUTES from '@routes/route';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<string>();
+  const router = useRouter();
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -25,6 +28,7 @@ export default function LoginPage() {
       ?.singIn(email, password)
       .then(() => {
         setIsLoading(false);
+        router.push(ROUTES.Dashboard.index);
       })
       .catch((err) => {
         setIsLoading(false);

@@ -21,6 +21,8 @@
       "@components/*": ["components/*"],
       "@layout/*": ["layout/*"],
       "@hooks/*": ["hooks/*"],
+      "@helpers/*": ["helpers/*"], 
+      "@routes/*": ["routes/*"], 
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
