@@ -17,6 +17,7 @@ const userNavigation = [
 ];
 
 function classNames(...classes) {
+  console.log('Clases:', {classes});
   return classes.filter(Boolean).join(' ');
 }
 
