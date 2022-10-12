@@ -10,7 +10,7 @@ export interface IProductsRequest {
   images?: string[];
 }
 
-const FormProduct = () => {
+const FormProduct = ({ setOpen, setAlert }) => {
   const formRef = useRef<HTMLFormElement>(null);
 
   const handlerSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -25,9 +25,27 @@ const FormProduct = () => {
       images: [formData.get('images')?.name],
     };
 
-    addProduct<IProductListResponse>(data).then((response) => {
-      console.log(response);
-    });
+    addProduct<IProductListResponse>(data)
+      .then((response) => {
+        setAlert({
+          active: true,
+          message: 'Product added successfully',
+          type: 'success',
+          autoClose: false,
+        });
+
+        setOpen(false);
+      })
+      .catch((err) => {
+        setAlert({
+          active: true,
+          message: err.message,
+          type: 'error',
+          autoClose: false,
+        });
+
+        setOpen(false);
+      });
   };
 
   return (
