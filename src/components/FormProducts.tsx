@@ -1,7 +1,8 @@
-import { parse } from 'node:path/win32';
 import { FormEvent, useRef } from 'react';
+import { addProduct } from '@services/api/product';
+import { IProductListResponse } from '@pages/dashboard';
 
-interface IProductsRequest {
+export interface IProductsRequest {
   title: string,
   price: number,
   description: string,
@@ -20,11 +21,14 @@ const FormProduct = () => {
       title: formData.get('title') as string,
       price: parseInt(formData.get('price') as string),
       description:  formData.get('description') as string,
-      categoryId: parseInt(formData.get('categoryId') as string),
+      categoryId: parseInt(formData.get('category') as string),
       images: [formData.get('images')?.name]
     }
 
-    console.log(data);
+    addProduct<IProductListResponse>(data)
+      .then(response => {
+        console.log(response);
+      });
   }
 
   return (

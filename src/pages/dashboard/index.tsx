@@ -2,7 +2,7 @@ import useFetch from '@hooks/useFetch';
 import endPoints from '@services/api';
 import { Chart } from '@common/Chart';
 
-interface IProductListResponse {
+export interface IProductListResponse {
   id: number,
   category: IProductCategoryResponse,
   description: string,
