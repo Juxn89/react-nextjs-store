@@ -17,11 +17,11 @@ const userNavigation = [
 ];
 
 function classNames(...classes) {
-  console.log('Clases:', {classes});
+  console.log('Clases:', { classes });
   return classes.filter(Boolean).join(' ');
 }
 
-const DEFAULT_AVATAR:string = 'https://ui-avatars.com/api/?name=';
+const DEFAULT_AVATAR: string = 'https://ui-avatars.com/api/?name=';
 
 export default function Header() {
   const auth = useAuth();
