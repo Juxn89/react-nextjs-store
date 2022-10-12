@@ -2,8 +2,9 @@ import axios from 'axios';
 import endPoints from '@services/api';
 import { IProductsRequest } from '@components/FormProducts';
 
+const { products } = endPoints;
+
 const addProduct = async <T>(body: IProductsRequest): Promise<T> => {
-  const { products } = endPoints;
   const config = {
     headers: {
       accept: '*/*',
@@ -16,4 +17,12 @@ const addProduct = async <T>(body: IProductsRequest): Promise<T> => {
   return response.data;
 };
 
-export { addProduct };
+const deleteProduct = async (id:number) => {
+  const response = await axios.delete(products.deleteProduct(id));
+  return response.data;
+}
+
+export { 
+  addProduct,
+  deleteProduct
+};
