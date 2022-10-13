@@ -2,6 +2,12 @@ import { FormEvent, useRef } from 'react';
 import { addProduct } from '@services/api/product';
 import { IProductListResponse } from '@pages/dashboard';
 
+interface IFormProductProps {
+  setOpen?: any,
+  setAlert?: any,
+  Product?: any
+}
+
 export interface IProductsRequest {
   title: string;
   price: number;
@@ -10,7 +16,7 @@ export interface IProductsRequest {
   images?: string[];
 }
 
-const FormProduct = ({ setOpen, setAlert }) => {
+const FormProduct = ({ setOpen, setAlert, Product }: IFormProductProps) => {
   const formRef = useRef<HTMLFormElement>(null);
 
   const handlerSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -57,19 +63,20 @@ const FormProduct = ({ setOpen, setAlert }) => {
               <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                 Title
               </label>
-              <input type="text" name="title" id="title" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+              <input defaultValue={Product?.title} type="text" name="title" id="title" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
             </div>
             <div className="col-span-6 sm:col-span-3">
               <label htmlFor="price" className="block text-sm font-medium text-gray-700">
                 Price
               </label>
-              <input type="number" name="price" id="price" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+              <input defaultValue={Product?.price}  type="number" name="price" id="price" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
             </div>
             <div className="col-span-6">
               <label htmlFor="category" className="block text-sm font-medium text-gray-700">
                 Category
               </label>
               <select
+                defaultValue={Product?.category} 
                 id="category"
                 name="category"
                 autoComplete="category-name"
@@ -88,6 +95,7 @@ const FormProduct = ({ setOpen, setAlert }) => {
                 Description
               </label>
               <textarea
+                defaultValue={Product?.description} 
                 name="description"
                 id="description"
                 autoComplete="description"
@@ -114,7 +122,7 @@ const FormProduct = ({ setOpen, setAlert }) => {
                         className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                       >
                         <span>Upload a file</span>
-                        <input id="images" name="images" type="file" className="sr-only" />
+                        <input  defaultValue={Product?.images} id="images" name="images" type="file" className="sr-only" />
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
