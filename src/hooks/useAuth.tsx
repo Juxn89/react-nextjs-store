@@ -2,6 +2,7 @@ import React, { useState, useContext, createContext } from 'react';
 import Cookie from 'js-cookie';
 import axios from 'axios';
 import endPoints from 'services/api';
+import ROUTES from '@routes/route';
 
 interface IProviderAuth {
   children: JSX.Element;
@@ -10,6 +11,7 @@ interface IProviderAuth {
 interface IuseProviderAuth {
   user: IProfileResponse | undefined;
   singIn: (email: string, password: string) => Promise<void>;
+  logOut: () => void
 }
 
 interface IProfileResponse {
@@ -58,8 +60,16 @@ function useProviderAuth(): IuseProviderAuth {
     }
   };
 
+  const logOut = () => {
+    Cookie.remove('token');
+    // setUser(undefined);
+    delete axios.defaults.headers.Authorization;
+    window.location.href = ROUTES.Auth.index;
+  }
+
   return {
     user,
     singIn,
+    logOut
   };
 }

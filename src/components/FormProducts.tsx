@@ -1,14 +1,15 @@
 import { FormEvent, useRef } from 'react';
-import { addProduct } from '@services/api/product';
+import { addProduct, updateProduct } from '@services/api/product';
 import { IProductListResponse } from '@pages/dashboard';
 
 interface IFormProductProps {
   setOpen?: any,
   setAlert?: any,
-  Product?: any
+  Product?: IProductsRequest
 }
 
 export interface IProductsRequest {
+  id?: number
   title: string;
   price: number;
   description: string;
@@ -31,27 +32,36 @@ const FormProduct = ({ setOpen, setAlert, Product }: IFormProductProps) => {
       images: [formData.get('images')?.name],
     };
 
-    addProduct<IProductListResponse>(data)
-      .then((response) => {
-        setAlert({
-          active: true,
-          message: 'Product added successfully',
-          type: 'success',
-          autoClose: false,
+    if(Product) {
+      updateProduct(Product.id as number, data)
+        .then(response => {
+          console.log(response);
         });
+    }
+    else {
+      addProduct<IProductListResponse>(data)
+        .then((response) => {
+          setAlert({
+            active: true,
+            message: 'Product added successfully',
+            type: 'success',
+            autoClose: false,
+          });
 
-        setOpen(false);
-      })
-      .catch((err) => {
-        setAlert({
-          active: true,
-          message: err.message,
-          type: 'error',
-          autoClose: false,
-        });
+          setOpen(false);
+        })
+        .catch((err) => {
+          setAlert({
+            active: true,
+            message: err.message,
+            type: 'error',
+            autoClose: false,
+          });
 
-        setOpen(false);
-      });
+          setOpen(false);
+        });      
+    }
+
   };
 
   return (
